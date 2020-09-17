@@ -1,27 +1,19 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getByBrand } from "../../redux/slice/menuSlice";
 
 function RefineByBrand(props) {
-  const {
-    types,
-    valueIdTitle,
-    valueIdType,
-    valueByBrand,
-    handleByBrand,
-    countProducts,
-  } = props;
+  const { types } = props;
+
+  const dispatch = useDispatch();
+  const { valueByBrand, valueIdTitle, valueIdType } = useSelector(
+    (state) => state.menu
+  );
+  const countProducts = useSelector((state) => state.main.countProducts);
 
   const handleCheck = (brand) => {
-    const newChecked = [...valueByBrand];
-
-    const currentType = newChecked.indexOf(brand);
-
-    if (currentType === -1) {
-      newChecked.push(brand);
-    } else {
-      newChecked.splice(currentType, 1);
-    }
-
-    handleByBrand(newChecked);
+    const actionByBrand = getByBrand(brand);
+    dispatch(actionByBrand);
   };
 
   return (

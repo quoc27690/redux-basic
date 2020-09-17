@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import Products from "./Products";
 import Pagination from "./Pagination";
 import ResultTop from "./ResultTop";
+import { useDispatch, useSelector } from "react-redux";
+import { getCountProducts } from "../../redux/slice/mainSlice";
 
 function Main(props) {
+  const [products, setProducts] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const valueSearch = useSelector((state) => state.search.valueSearch);
   const {
     valueTitle,
     valueType,
@@ -12,15 +19,10 @@ function Main(props) {
     valueByRatings,
     valueByPricesStart,
     valueByPricesEnd,
-    handleProducts,
-    valueSearch,
-  } = props;
-
-  const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(4);
-
-  const [sort, setSort] = useState("");
+  } = useSelector((state) => state.menu);
+  const { sort, currentPage, productsPerPage } = useSelector(
+    (state) => state.main
+  );
 
   useEffect(() => {
     let xhttp = new XMLHttpRequest();
@@ -91,7 +93,8 @@ function Main(props) {
   ]);
 
   useEffect(() => {
-    handleProducts(products);
+    const actionCountProducts = getCountProducts(products);
+    dispatch(actionCountProducts);
   }, [products]);
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -101,24 +104,11 @@ function Main(props) {
     indexOfLastProduct
   );
 
-  const handlePaginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleSort = (value) => {
-    setSort(value);
-  };
-
   return (
     <div className="main">
-      <ResultTop products={products} handleSort={handleSort} />
+      <ResultTop products={products} />
       <Products currentProducts={currentProducts} />
-      <Pagination
-        currentPage={currentPage}
-        productsPerPage={productsPerPage}
-        totalProducts={products.length}
-        handlePaginate={handlePaginate}
-      />
+      <Pagination totalProducts={products.length} />
     </div>
   );
 }

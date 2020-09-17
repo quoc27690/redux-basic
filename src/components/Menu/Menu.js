@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getClearAllFilter } from "../../redux/slice/menuSlice";
 import RefineByBrand from "./RefineByBrand";
 import RefineByPrices from "./RefineByPrices";
 import RefineByRatings from "./RefineByRatings";
@@ -6,28 +8,19 @@ import RefineByType from "./RefineByType";
 import ShowResultFor from "./ShowResultFor";
 
 function Menu(props) {
-  const {
-    handleTitle,
-    handleType,
-    handleByType,
-    handleByBrand,
-    handleByRatings,
-    handleByPrices,
-    valueByBrand,
-    valueByPricesEnd,
-    valueByPricesStart,
-    valueByRatings,
-    valueByType,
-    valueTitle,
-    valueType,
-    handleClearAllFilter,
-    countProducts,
-  } = props;
-
   const [types, setTypes] = useState([]);
 
-  const [valueIdTitle, setvalueIdTitle] = useState("");
-  const [valueIdType, setvalueIdType] = useState("");
+  const dispatch = useDispatch();
+
+  const {
+    valueTitle,
+    valueType,
+    valueByType,
+    valueByBrand,
+    valueByRatings,
+    valueByPricesStart,
+    valueByPricesEnd,
+  } = useSelector((state) => state.menu);
 
   useEffect(() => {
     let xhttp = new XMLHttpRequest();
@@ -41,12 +34,9 @@ function Menu(props) {
     };
   }, []);
 
-  const handleIdTitle = (id) => {
-    setvalueIdTitle(id);
-  };
-
-  const handleIdType = (id) => {
-    setvalueIdType(id);
+  const onClick = (params) => {
+    const actionClearAllFilter = getClearAllFilter();
+    dispatch(actionClearAllFilter);
   };
 
   return (
@@ -59,58 +49,26 @@ function Menu(props) {
         valueByType.length > 0 ||
         valueTitle ||
         valueType ? (
-          <button onClick={() => handleClearAllFilter()}>
-            Clear all filter
-          </button>
+          <button onClick={() => onClick()}>Clear all filter</button>
         ) : (
           ""
         )}
       </div>
       <div className="menu__result">
         <p className="menu__title-1">Show results for</p>
-        <ShowResultFor
-          types={types}
-          handleIdTitle={handleIdTitle}
-          handleIdType={handleIdType}
-          handleTitle={handleTitle}
-          handleType={handleType}
-          valueIdTitle={valueIdTitle}
-          valueIdType={valueIdType}
-          valueTitle={valueTitle}
-          valueType={valueType}
-        />
+        <ShowResultFor types={types} />
       </div>
       <hr></hr>
       <div className="menu__refine">
         <p className="menu__title-1">Refine by</p>
         <p className="menu__title-2">Type</p>
-        <RefineByType
-          types={types}
-          valueIdTitle={valueIdTitle}
-          valueByType={valueByType}
-          handleByType={handleByType}
-          countProducts={countProducts}
-        />
+        <RefineByType types={types} />
         <p className="menu__title-2">Brand</p>
-        <RefineByBrand
-          types={types}
-          valueIdTitle={valueIdTitle}
-          valueIdType={valueIdType}
-          valueByBrand={valueByBrand}
-          handleByBrand={handleByBrand}
-          countProducts={countProducts}
-        />
+        <RefineByBrand types={types} />
         <p className="menu__title-2">Ratings</p>
-        <RefineByRatings
-          handleByRatings={handleByRatings}
-          valueByRatings={valueByRatings}
-        />
+        <RefineByRatings />
         <p className="menu__title-2">Prices</p>
-        <RefineByPrices
-          handleByPrices={handleByPrices}
-          valueByPricesStart={valueByPricesStart}
-          valueByPricesEnd={valueByPricesEnd}
-        />
+        <RefineByPrices />
       </div>
       <hr></hr>
       <div className="menu__text">Data courtesy of Best Buy</div>

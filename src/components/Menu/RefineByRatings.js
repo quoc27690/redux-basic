@@ -1,7 +1,11 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getByRatings } from "../../redux/slice/menuSlice";
 
 function RefineByRatings(props) {
-  const { handleByRatings, valueByRatings } = props;
+  const dispatch = useDispatch();
+
+  const valueByRatings = useSelector((state) => state.menu.valueByRatings);
 
   const ratings = [4, 3, 2, 1];
 
@@ -17,7 +21,8 @@ function RefineByRatings(props) {
   };
 
   const onClick = (rating) => {
-    handleByRatings(rating);
+    const actionByRatings = getByRatings(rating);
+    dispatch(actionByRatings);
   };
 
   return (

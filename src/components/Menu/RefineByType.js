@@ -1,25 +1,18 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getByType } from "../../redux/slice/menuSlice";
 
 function RefineByType(props) {
-  const {
-    types,
-    valueIdTitle,
-    valueByType,
-    handleByType,
-    countProducts,
-  } = props;
+  const { types } = props;
+
+  const dispatch = useDispatch();
+
+  const { valueIdTitle, valueByType } = useSelector((state) => state.menu);
+  const countProducts = useSelector((state) => state.main.countProducts);
 
   const onChange = (type) => {
-    const newChecked = [...valueByType];
-
-    const currentType = newChecked.indexOf(type);
-
-    if (currentType === -1) {
-      newChecked.push(type);
-    } else {
-      newChecked.splice(currentType, 1);
-    }
-    handleByType(newChecked);
+    const actionByType = getByType(type);
+    dispatch(actionByType);
   };
 
   return (

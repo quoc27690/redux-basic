@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getByPricesEnd, getByPricesStart } from "../../redux/slice/menuSlice";
 
 function RefineByPrices(props) {
-  const { handleByPrices, valueByPricesStart, valueByPricesEnd } = props;
+  const dispatch = useDispatch();
+
+  const { valueByPricesStart, valueByPricesEnd } = useSelector(
+    (state) => state.menu
+  );
 
   const [startInput, setStartInput] = useState("");
   const [endInput, setEndInput] = useState("");
@@ -19,7 +25,10 @@ function RefineByPrices(props) {
   }
 
   const onClick = (start, end) => {
-    handleByPrices(start, end);
+    const actionByPricesStart = getByPricesStart(start);
+    const actionByPricesEnd = getByPricesEnd(end);
+    dispatch(actionByPricesStart);
+    dispatch(actionByPricesEnd);
   };
 
   return (

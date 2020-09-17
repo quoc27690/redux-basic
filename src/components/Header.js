@@ -1,7 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { getSearch } from "../redux/slice/searchSlice";
 
 function Header(props) {
-  const { handleSearch } = props;
+  const dispatch = useDispatch();
+
+  const onChange = (value) => {
+    const action = getSearch(value);
+    dispatch(action);
+  };
 
   return (
     <header>
@@ -17,7 +24,7 @@ function Header(props) {
       <div className="header__input">
         <input
           placeholder="Search a product"
-          onChange={(value) => handleSearch(value.target.value)}
+          onChange={(value) => onChange(value.target.value)}
         />
         <button>
           <i className="fa fa-search"></i>

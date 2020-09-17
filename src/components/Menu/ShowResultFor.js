@@ -1,30 +1,42 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getIdTitle,
+  getIdType,
+  getTitle,
+  getType,
+} from "../../redux/slice/menuSlice";
 
 function ShowResultFor(props) {
-  const {
-    types,
-    handleIdTitle,
-    handleIdType,
-    handleTitle,
-    handleType,
-    valueTitle,
-    valueType,
-  } = props;
+  const { types } = props;
+
+  const dispatch = useDispatch();
+
+  const { valueTitle, valueType } = useSelector((state) => state.menu);
 
   const toggle = (id, title, subs) => {
     let index = types.findIndex((x) => x.id === id);
+
+    const actionGetTitle = getTitle(title);
+    const actionGetType = getType((subs = ""));
+    const actionGetIdTitle = getIdTitle(id);
+
     if (index !== -1) {
-      handleIdTitle(id);
-      handleTitle(title);
-      handleType((subs = ""));
+      dispatch(actionGetIdTitle);
+      dispatch(actionGetTitle);
+      dispatch(actionGetType);
     }
   };
 
   const toggleSub = (id, type, typeMain) => {
     let index = typeMain.subs.findIndex((x) => x.id === id);
+
+    const actionGetType = getType(type);
+    const actionGetIdType = getIdType(id);
+
     if (index !== -1) {
-      handleIdType(id);
-      handleType(type);
+      dispatch(actionGetIdType);
+      dispatch(actionGetType);
     }
   };
 
