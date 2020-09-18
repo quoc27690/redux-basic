@@ -1,4 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import fetchProducts from "../../components/api/fetchProducts";
+
+export const getProducts = createAsyncThunk(
+  "getProducts",
+  async ({
+    valueTitle,
+    valueType,
+    valueByType,
+    valueByBrand,
+    valueByRatings,
+    valueByPricesStart,
+    valueByPricesEnd,
+    sort,
+    valueSearch,
+  }) => {
+    const currentProducts = await fetchProducts({
+      valueTitle,
+      valueType,
+      valueByType,
+      valueByBrand,
+      valueByRatings,
+      valueByPricesStart,
+      valueByPricesEnd,
+      sort,
+      valueSearch,
+    });
+    return currentProducts;
+  }
+);
 
 const mainSlice = createSlice({
   name: "mainSlice",
@@ -21,18 +50,14 @@ const mainSlice = createSlice({
     getCurrentPage(state, action) {
       state.currentPage = action.payload;
     },
-
-    getProducts(state, action) {
+  },
+  extraReducers: {
+    [getProducts.fulfilled]: (state, action) => {
       state.products.push(action.payload);
     },
   },
 });
 
 const { reducer, actions } = mainSlice;
-export const {
-  getCountProducts,
-  getSort,
-  getCurrentPage,
-  getProducts,
-} = actions;
+export const { getCountProducts, getSort, getCurrentPage } = actions;
 export default reducer;

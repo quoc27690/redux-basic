@@ -1,4 +1,4 @@
-const fetchProducts = (
+function fetchProducts({
   valueTitle,
   valueType,
   valueByType,
@@ -7,9 +7,8 @@ const fetchProducts = (
   valueByPricesStart,
   valueByPricesEnd,
   sort,
-  valueSearch
-) => {
-  let xhttp = new XMLHttpRequest();
+  valueSearch,
+}) {
   let url = `http://localhost:4000/products?`;
 
   if (valueTitle) {
@@ -57,13 +56,11 @@ const fetchProducts = (
     url += `&q=${valueSearch}`;
   }
 
-  xhttp.open("GET", url, true);
-  xhttp.send();
-  xhttp.onreadystatechange = () => {
-    if (xhttp.readyState === 4 && xhttp.status === 200) {
-      setProducts(JSON.parse(xhttp.responseText));
-    }
-  };
-};
+  fetch(url)
+    .then((res) => res.json())
+    .then((result) => {
+      return result;
+    });
+}
 
 export default fetchProducts;
