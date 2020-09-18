@@ -56,7 +56,7 @@ function fetchProducts({
     url += `&q=${valueSearch}`;
   }
 
-  fetch(url)
+  return fetch(url)
     .then((res) => res.json())
     .then((result) => {
       return result;

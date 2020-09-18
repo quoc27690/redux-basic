@@ -53,7 +53,7 @@ const mainSlice = createSlice({
   },
   extraReducers: {
     [getProducts.fulfilled]: (state, action) => {
-      state.products.push(action.payload);
+      state.products = action.payload;
     },
   },
 });
