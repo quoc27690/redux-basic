@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getClearAllFilter } from "../../redux/slice/menuSlice";
+import { getClearAllFilter, getTypes } from "../../redux/slice/menuSlice";
 import RefineByBrand from "./RefineByBrand";
 import RefineByPrices from "./RefineByPrices";
 import RefineByRatings from "./RefineByRatings";
@@ -8,8 +8,6 @@ import RefineByType from "./RefineByType";
 import ShowResultFor from "./ShowResultFor";
 
 function Menu(props) {
-  const [types, setTypes] = useState([]);
-
   const dispatch = useDispatch();
 
   const {
@@ -20,16 +18,13 @@ function Menu(props) {
     valueByRatings,
     valueByPricesStart,
     valueByPricesEnd,
+    types,
   } = useSelector((state) => state.menu);
 
   useEffect(() => {
-    let url = "http://localhost:4000/types";
-    fetch(url)
-      .then((res) => res.json())
-      .then((result) => {
-        setTypes(result);
-      });
-  }, []);
+    const actionTypes = getTypes();
+    dispatch(actionTypes);
+  }, [dispatch]);
 
   const onClick = (params) => {
     const actionClearAllFilter = getClearAllFilter();

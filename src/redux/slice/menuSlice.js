@@ -1,4 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import fetchTypes from "../../components/api/fetchTypes";
+
+export const getTypes = createAsyncThunk("getTypes", async () => {
+  const currentTypes = await fetchTypes();
+  return currentTypes;
+});
 
 const menuSlice = createSlice({
   name: "menuSlice",
@@ -12,6 +18,7 @@ const menuSlice = createSlice({
     valueByPricesEnd: "",
     valueIdTitle: "",
     valueIdType: "",
+    types: [],
   },
   reducers: {
     getTitle(state, action) {
@@ -70,6 +77,12 @@ const menuSlice = createSlice({
       state.valueByType = [];
       state.valueTitle = "";
       state.valueType = "";
+    },
+  },
+
+  extraReducers: {
+    [getTypes.fulfilled]: (state, action) => {
+      state.types = action.payload;
     },
   },
 });
