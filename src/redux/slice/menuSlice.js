@@ -88,8 +88,7 @@ const menuSlice = createSlice({
     },
 
     [getTypes.rejected]: (state, action) => {
-      state.error = action.payload;
-      state.types = [];
+      state.error = action.error;
       state.isLoading = false;
     },
 

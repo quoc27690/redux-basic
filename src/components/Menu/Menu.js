@@ -38,7 +38,7 @@ function Menu(props) {
       {isLoading ? (
         <h1>Loading...</h1>
       ) : error ? (
-        <h1>{error}</h1>
+        <h1>{error.message}</h1>
       ) : (
         <div>
           <div className="menu__clear">

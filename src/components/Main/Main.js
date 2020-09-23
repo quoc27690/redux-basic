@@ -77,7 +77,6 @@ function Main(props) {
         <h1>{error.message}</h1>
       ) : (
         <div>
-          {" "}
           <ResultTop products={products} />
           <Products currentProducts={currentProducts} />
           <Pagination totalProducts={products.length} />
