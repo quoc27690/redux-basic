@@ -37,6 +37,8 @@ const mainSlice = createSlice({
     currentPage: 1,
     productsPerPage: 4,
     products: [],
+    isLoading: false,
+    error: "",
   },
   reducers: {
     getCountProducts(state, action) {
@@ -52,8 +54,18 @@ const mainSlice = createSlice({
     },
   },
   extraReducers: {
+    [getProducts.pending]: (state) => {
+      state.isLoading = true;
+    },
+
     [getProducts.fulfilled]: (state, action) => {
       state.products = action.payload;
+      state.isLoading = false;
+    },
+
+    [getProducts.rejected]: (state, action) => {
+      state.error = action.error;
+      state.isLoading = false;
     },
   },
 });

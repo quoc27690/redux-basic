@@ -9,7 +9,7 @@ function fetchProducts({
   sort,
   valueSearch,
 }) {
-  let url = `http://localhost:4000/products?`;
+  let url = `http://localhost:4500/products?`;
 
   if (valueTitle) {
     url += `&title=${valueTitle}`;

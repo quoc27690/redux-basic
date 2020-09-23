@@ -4,6 +4,7 @@ import Pagination from "./Pagination";
 import ResultTop from "./ResultTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getCountProducts, getProducts } from "../../redux/slice/mainSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function Main(props) {
   const dispatch = useDispatch();
@@ -18,9 +19,16 @@ function Main(props) {
     valueByPricesStart,
     valueByPricesEnd,
   } = useSelector((state) => state.menu);
-  const { sort, currentPage, productsPerPage, products } = useSelector(
-    (state) => state.main
-  );
+  const {
+    sort,
+    currentPage,
+    productsPerPage,
+    products,
+    isLoading,
+    error,
+  } = useSelector((state) => state.main);
+
+  console.log(error, products);
 
   useEffect(() => {
     const actionProducts = getProducts({
@@ -34,6 +42,7 @@ function Main(props) {
       sort,
       valueSearch,
     });
+
     dispatch(actionProducts);
   }, [
     valueTitle,
@@ -62,9 +71,18 @@ function Main(props) {
 
   return (
     <div className="main">
-      <ResultTop products={products} />
-      <Products currentProducts={currentProducts} />
-      <Pagination totalProducts={products.length} />
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : error ? (
+        <h1>{error.message}</h1>
+      ) : (
+        <div>
+          {" "}
+          <ResultTop products={products} />
+          <Products currentProducts={currentProducts} />
+          <Pagination totalProducts={products.length} />
+        </div>
+      )}
     </div>
   );
 }

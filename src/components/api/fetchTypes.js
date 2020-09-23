@@ -5,6 +5,9 @@ function fetchTypes() {
     .then((res) => res.json())
     .then((result) => {
       return result;
+    })
+    .catch((error) => {
+      return error;
     });
 }
 

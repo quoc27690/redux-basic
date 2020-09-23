@@ -19,6 +19,8 @@ const menuSlice = createSlice({
     valueIdTitle: "",
     valueIdType: "",
     types: [],
+    isLoading: false,
+    error: null,
   },
   reducers: {
     getTitle(state, action) {
@@ -81,8 +83,19 @@ const menuSlice = createSlice({
   },
 
   extraReducers: {
+    [getTypes.pending]: (state) => {
+      state.isLoading = true;
+    },
+
+    [getTypes.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.types = [];
+      state.isLoading = false;
+    },
+
     [getTypes.fulfilled]: (state, action) => {
       state.types = action.payload;
+      state.isLoading = false;
     },
   },
 });
