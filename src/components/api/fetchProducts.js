@@ -9,7 +9,7 @@ function fetchProducts({
   sort,
   valueSearch,
 }) {
-  let url = `http://localhost:4000/products?`;
+  let url = `https://enigmatic-savannah-13455.herokuapp.com/products?`;
 
   if (valueTitle) {
     url += `&title=${valueTitle}`;

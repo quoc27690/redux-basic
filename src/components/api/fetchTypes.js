@@ -1,5 +1,5 @@
 function fetchTypes() {
-  let url = "http://localhost:4000/types";
+  let url = "https://enigmatic-savannah-13455.herokuapp.com/types";
 
   return fetch(url)
     .then((res) => res.json())
